@@ -1,1 +1,1 @@
-# note-taking-api
+# Note Taking REST API
