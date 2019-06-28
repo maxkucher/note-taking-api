@@ -8,6 +8,7 @@ import com.maxkucher.note_taking.entities.UserInfo;
 import com.maxkucher.note_taking.exceptions.UserNotFoundException;
 import com.maxkucher.note_taking.repositories.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -18,6 +19,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UsersInfoService {
     private final UserInfoRepository userInfoRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public UserInfo get(String email) {
         return userInfoRepository
@@ -37,10 +39,10 @@ public class UsersInfoService {
     }
 
     public UserInfo create(CreateUserDto userDto) {
-        //TODO encrypt password !!!!
         UserInfo userInfo = UserInfo.builder()
                 .email(userDto.getEmail())
-                .password(userDto.getPassword())
+                .password(passwordEncoder
+                        .encode(userDto.getPassword()))
                 .firstName(userDto.getFirstName())
                 .lastName(userDto.getLastName())
                 .build();

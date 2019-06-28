@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
+@CrossOrigin(origins = "*")
 public class UsersInfoController {
     private final UsersInfoService usersInfoService;
 
