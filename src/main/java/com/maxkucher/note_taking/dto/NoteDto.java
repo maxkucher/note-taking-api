@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 public class NoteDto {
 
     @Size(max = 50)
-    private String noeTitle;
+    private String noteTitle;
 
     private String noteContent;
 }
