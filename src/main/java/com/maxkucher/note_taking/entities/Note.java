@@ -1,5 +1,6 @@
 package com.maxkucher.note_taking.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,6 +26,11 @@ public class Note {
 
     @Column(nullable = false)
     private String noteContent;
+
+
+    @ManyToOne
+    @JsonIgnore
+    private UserInfo user;
 
 
     @Column(updatable = false)

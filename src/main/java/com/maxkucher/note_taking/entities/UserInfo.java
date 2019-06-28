@@ -1,6 +1,7 @@
 package com.maxkucher.note_taking.entities;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UserInfo {
     @Id
     @GeneratedValue
@@ -28,6 +30,10 @@ public class UserInfo {
     private String password;
 
     @OneToMany(cascade = CascadeType.ALL,
-            orphanRemoval = true)
+            fetch = FetchType.LAZY,
+            orphanRemoval = true,
+            mappedBy = "user")
     private List<Note> notes;
+
+
 }

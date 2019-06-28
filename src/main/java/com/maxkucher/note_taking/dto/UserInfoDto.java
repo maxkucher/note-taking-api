@@ -1,4 +1,4 @@
-package com.maxkucher.note_taking.entities;
+package com.maxkucher.note_taking.dto;
 
 
 import lombok.AllArgsConstructor;
