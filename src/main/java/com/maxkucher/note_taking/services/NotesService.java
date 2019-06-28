@@ -41,4 +41,8 @@ public class NotesService {
         note.setNoteContent(noteDto.getNoteContent());
         return notesRepository.save(note);
     }
+
+    public void delete(UUID id) {
+        notesRepository.deleteById(id);
+    }
 }

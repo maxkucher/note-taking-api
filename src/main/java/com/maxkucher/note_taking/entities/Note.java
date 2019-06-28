@@ -1,21 +1,18 @@
 package com.maxkucher.note_taking.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
 @Data
 @Entity
 @Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class Note {
 
@@ -30,9 +27,19 @@ public class Note {
     private String noteContent;
 
 
-    @CreatedDate
+    @Column(updatable = false)
     private Date createdDate;
 
-    @LastModifiedDate
     private Date lastModified;
+
+    @PreUpdate
+    private void onPreUpdate() {
+        this.lastModified = new Date();
+    }
+
+    @PrePersist
+    private void onPrePersist() {
+        this.createdDate = new Date();
+        this.lastModified = new Date();
+    }
 }
