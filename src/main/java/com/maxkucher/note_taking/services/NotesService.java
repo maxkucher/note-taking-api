@@ -14,7 +14,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class NotesService {
-    private NotesRepository notesRepository;
+    private final NotesRepository notesRepository;
 
 
     public Note getById(UUID id) {
