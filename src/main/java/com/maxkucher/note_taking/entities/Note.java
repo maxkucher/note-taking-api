@@ -30,6 +30,7 @@ public class Note {
 
     @ManyToOne
     @JsonIgnore
+    @JoinColumn
     private UserInfo user;
 
 

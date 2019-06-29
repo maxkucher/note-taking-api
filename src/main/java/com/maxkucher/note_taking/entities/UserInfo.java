@@ -5,8 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.UUID;
 
 @Data
@@ -28,14 +30,4 @@ public class UserInfo {
 
     @Column(nullable = false)
     private String password;
-
-    @OneToMany(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
-            orphanRemoval = true,
-            mappedBy = "user")
-    private List<Note> notes;
-
-
-
-
 }

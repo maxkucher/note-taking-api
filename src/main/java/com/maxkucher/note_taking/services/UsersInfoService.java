@@ -50,9 +50,9 @@ public class UsersInfoService {
     }
 
 
-    public UserInfo update(UUID id, UpdateUserDto updateUserDto) {
+    public UserInfo update(String currentEmail, UpdateUserDto updateUserDto) {
 
-        UserInfo userInfo = get(id);
+        UserInfo userInfo = get(currentEmail);
         userInfo.setEmail(updateUserDto.getEmail());
         userInfo.setFirstName(updateUserDto.getFirstName());
         userInfo.setLastName(updateUserDto.getLastName());
@@ -60,7 +60,7 @@ public class UsersInfoService {
     }
 
     @Transactional
-    public void delete(UUID id) {
-        userInfoRepository.deleteById(id);
+    public void delete(String email) {
+        userInfoRepository.deleteByEmail(email);
     }
 }

@@ -4,17 +4,13 @@ import com.maxkucher.note_taking.dto.CreateUserDto;
 import com.maxkucher.note_taking.dto.NoteTakerResponse;
 import com.maxkucher.note_taking.dto.UpdateUserDto;
 import com.maxkucher.note_taking.dto.UserInfoDto;
-import com.maxkucher.note_taking.entities.UserInfo;
 import com.maxkucher.note_taking.services.UsersInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * Controller for managing user-related endpoints
@@ -26,42 +22,39 @@ import java.util.stream.Collectors;
 public class UsersInfoController {
     private final UsersInfoService usersInfoService;
 
+    @PreAuthorize("#email==authentication.name")
     @GetMapping
-    public ResponseEntity<?> get(@RequestParam(required = false) String email,
-                                 @RequestParam(required = false) UUID id) {
-        if (Objects.nonNull(id)) {
-            return ResponseEntity.ok(new UserInfoDto(
-                    usersInfoService.get(id)));
-        }
+    public ResponseEntity<?> get(@RequestParam() String email) {
 
-        if (Objects.nonNull(email)) {
-            return ResponseEntity.ok(new UserInfoDto(
-                    usersInfoService.get(email)));
-        }
 
-        return ResponseEntity.ok(usersInfoService
+        //TODO uncomment after adding roles
+        return ResponseEntity.ok(new UserInfoDto(
+                usersInfoService.get(email)));
+        /*return ResponseEntity.ok(usersInfoService
                 .getAll()
                 .stream()
                 .map(UserInfoDto::new)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList()));*/
     }
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody CreateUserDto createUserDto) {
-        return ResponseEntity.ok(usersInfoService.create(createUserDto));
+        return ResponseEntity.ok(new UserInfoDto(usersInfoService.create(createUserDto)));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable UUID id,
+    @PreAuthorize("#currentEmail == authentication.name")
+    @PutMapping("/{currentEmail}")
+    public ResponseEntity<?> update(@PathVariable String currentEmail,
                                     @Valid @RequestBody UpdateUserDto updateUserDto) {
         return ResponseEntity.ok(new UserInfoDto(usersInfoService
-                .update(id, updateUserDto)));
+                .update(currentEmail, updateUserDto)));
     }
 
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable UUID id) {
-        usersInfoService.delete(id);
+    @PreAuthorize("#email == authentication.name")
+    @DeleteMapping("/{email}")
+    public ResponseEntity<?> delete(@PathVariable String email) {
+        usersInfoService.delete(email);
         return ResponseEntity.ok(new NoteTakerResponse(true,
                 "User was deleted"));
     }
